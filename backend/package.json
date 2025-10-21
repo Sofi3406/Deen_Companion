@@ -1,0 +1,26 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "/backend\r |-- server.js               # Entry point, Express app setup\r |-- config/\r |     |-- db.js             # MongoDB connection\r |-- models/\r |     |-- User.js           # User schema\r |     |-- Activity.js       # Activity tracking schema\r |-- routes/\r |     |-- auth.js           # Auth routes (signup, login)\r |     |-- prayers.js        # Prayer related endpoints\r |     |-- quran.js          # Quran verse related endpoints\r |     |-- activities.js     # Track user activities\r |     |-- leaderboard.js    # Leaderboard endpoint\r |-- middleware/\r |     |-- authMiddleware.js # JWT verification\r |-- controllers/\r |     |-- authController.js\r |     |-- prayersController.js\r |     |-- quranController.js\r |     |-- activitiesController.js\r |-- utils/\r |     |-- gamification.js   # Points and badges calculation\r |-- .env                    # Environment variables\r |-- package.json            # Dependencies and scripts",
+  "main": "server.js",
+  "scripts": {
+    "dev": "nodemon server.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.12.2",
+    "bcryptjs": "^3.0.2",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.19.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}
