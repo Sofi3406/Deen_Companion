@@ -1,34 +1,50 @@
 const jwt = require('jsonwebtoken');
 
+/**
+ * Authentication middleware to protect API routes.
+ * Verifies JWT token from Authorization (Bearer) or x-auth-token header.
+ */
 const authMiddleware = (req, res, next) => {
-  let token;
-
-  // Check for token in Authorization header (Bearer) or x-auth-token
-  if (req.header("Authorization") && req.header("Authorization").startsWith("Bearer ")) {
-    token = req.header("Authorization").split(" ")[1];
-  } else if (req.header("x-auth-token")) {
-    token = req.header("x-auth-token");
-  }
-
-  // No token found
-  if (!token) {
-    return res.status(401).json({ msg: "No token, authorization denied" });
-  }
-
   try {
-    // Verify token
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    // Retrieve token from common sources
+    let token = null;
+    const authHeader = req.header('Authorization');
+    const xAuthToken = req.header('x-auth-token');
 
-    if (!decoded || !decoded.user || !decoded.user.id) {
-      return res.status(401).json({ msg: "Token payload malformed" });
+    if (authHeader && authHeader.startsWith('Bearer ')) {
+      token = authHeader.split(' ')[1];
+    } else if (xAuthToken) {
+      token = xAuthToken;
     }
 
-    // Attach user to request
-    req.user = decoded.user;
+    // If no token, deny access
+    if (!token) {
+      return res.status(401).json({ msg: 'Access denied. No token provided.' });
+    }
+
+    // Verify token authenticity and expiration
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    // Validate decoded payload format
+    if (!decoded || (!decoded.user && !decoded.id)) {
+      return res.status(401).json({ msg: 'Invalid token payload structure.' });
+    }
+
+    // Attach user info for downstream middleware/controllers
+    req.user = decoded.user || { id: decoded.id };
     next();
-  } catch (err) {
-    // Token verification failed
-    return res.status(401).json({ msg: "Token is not valid or expired" });
+
+  } catch (error) {
+    // Handle specific JWT errors for better clarity
+    if (error.name === 'TokenExpiredError') {
+      return res.status(401).json({ msg: 'Token expired. Please log in again.' });
+    }
+    if (error.name === 'JsonWebTokenError') {
+      return res.status(401).json({ msg: 'Invalid token. Authentication failed.' });
+    }
+
+    console.error('JWT Verification Error:', error.message);
+    return res.status(500).json({ msg: 'Internal authentication error.' });
   }
 };
 

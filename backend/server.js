@@ -30,7 +30,9 @@ app.use("/api/achievements", require("./routes/achievements"));
 app.use("/api/auth", require("./routes/auth"));              // auth.js
 app.use("/api/dhikr", require("./routes/dhikr"));            // dhikr.js
 app.use("/api/imaan", require("./routes/imaan"));            // imaan.js
-app.use("/api/user", require("./routes/user"));              // user.js
+app.use("/api/user", require("./routes/user"));   
+app.use('/api/reminders', require('./routes/reminders'));
+           // user.js
 
 // Root test endpoint
 app.get("/", (req, res) => {
