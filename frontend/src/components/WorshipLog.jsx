@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import apiClient from "../api/apiClient"; // Adjust path if needed!
 
 const worshipActsTemplate = [
   { key: "Fajr", label: "Fajr Prayer", points: 10 },
@@ -24,14 +24,14 @@ const WorshipLog = () => {
   // Load today's worship log on mount
   useEffect(() => {
     setLoading(true);
-    axios
-      .get("/api/worship/today")
+    apiClient
+      .get("/worship/today")
       .then((res) => {
         if (res.data && typeof res.data.worship === "object") {
           setStatus((prev) => ({ ...prev, ...res.data.worship }));
         }
       })
-      .catch((err) => setError("Could not load today's worship log"))
+      .catch(() => setError("Could not load today's worship log"))
       .finally(() => setLoading(false));
   }, []);
 
@@ -41,7 +41,7 @@ const WorshipLog = () => {
     setSaving(true);
     setError("");
     try {
-      await axios.put("/api/worship/today", { worship: status });
+      await apiClient.put("/worship/today", { worship: status });
       alert("Today's worship log updated!");
     } catch (err) {
       setError("Failed to update worship log");
