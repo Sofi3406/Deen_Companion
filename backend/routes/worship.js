@@ -9,7 +9,7 @@ const {
 // Get today's worship acts for authenticated user
 router.get('/today', authMiddleware, getTodaysWorship);
 
-// Update today's worship acts for authenticated user (should be PUT, not POST)
+// Update today's worship acts for authenticated user 
 router.put('/today', authMiddleware, updateTodaysWorship);
 
 module.exports = router;
