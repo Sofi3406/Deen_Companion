@@ -188,8 +188,6 @@ This project is licensed under the MIT License – feel free to modify or reuse 
 
         
 
-        Demosntration video
+       ## 🎥 Demonstration Video
 
-
-    ![Awesom](https://www.awesomescreenshot.com/video/45544580?key=f88cd20f651053d09100c9f36f5c8350)
-                     
+👉 [Click here to watch the demonstration video](https://www.awesomescreenshot.com/video/45544580?key=f88cd20f651053d09100c9f36f5c8350)
